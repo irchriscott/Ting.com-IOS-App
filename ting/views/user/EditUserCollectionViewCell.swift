@@ -231,14 +231,14 @@ class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UI
             let spinner = Spinner()
             spinner.show()
             
-            let params: Parameters = ["token": self.session!.token, "old_email": oldEmail.text!, "new_email": newEmail.text!, "password": password.text!, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
+            let params: Parameters = ["token": self.session!.token!, "old_email": oldEmail.text!, "new_email": newEmail.text!, "password": password.text!, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
             
             guard let url = URL(string: URLs.updateProfileEmail) else { return }
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.addValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
-            request.setValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
+            request.addValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+            request.setValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
             
             let boundary = Requests().generateBoundary()
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -325,14 +325,14 @@ class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UI
             let spinner = Spinner()
             spinner.show()
             
-            let params: Parameters = ["token": self.session!.token, "old_password": oldPassword.text!, "new_password": newPassword.text!, "confirm_password": confirmPassword.text!, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
+            let params: Parameters = ["token": self.session!.token!, "old_password": oldPassword.text!, "new_password": newPassword.text!, "confirm_password": confirmPassword.text!, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
             
             guard let url = URL(string: URLs.updateProfilePassword) else { return }
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.addValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
-            request.setValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
+            request.addValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+            request.setValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
             
             let boundary = Requests().generateBoundary()
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -413,14 +413,14 @@ class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UI
             let spinner = Spinner()
             spinner.show()
             
-            let params: Parameters = ["token": self.session!.token, "date_of_birth": dob, "phone": phone, "gender": gender, "name": name, "username": username, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
+            let params: Parameters = ["token": self.session!.token!, "date_of_birth": dob, "phone": phone, "gender": gender, "name": name, "username": username, "os": "Apple IOS", "tz": TimeZone.current.description, "time": Date().description]
             
             guard let url = URL(string: URLs.updateProfileIdentity) else { return }
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.addValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
-            request.setValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
+            request.addValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+            request.setValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
             
             let boundary = Requests().generateBoundary()
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

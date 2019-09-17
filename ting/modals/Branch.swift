@@ -84,6 +84,8 @@ struct BranchPromotions: Codable {
 
 struct BranchReviews: Codable {
     let count: Int
+    let average: Int
+    let percents: [Int]
     let reviews: [RestaurantReview]?
 }
 

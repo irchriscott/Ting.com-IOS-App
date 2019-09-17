@@ -21,7 +21,7 @@ class UserAuthentication : NSObject {
     }
     
     public func isUserLoggedIn() -> Bool {
-        return UserDefaults.standard.object(forKey: SESSION_USER_KEY) != nil
+        return UserDefaults.standard.object(forKey: SESSION_USER_KEY) != nil && self.get() != nil
     }
     
     public func saveSignUpData(key: String, data: String){

@@ -36,14 +36,14 @@ struct PromotionItem: Codable {
 }
 
 struct PromotionItemType: Codable {
-    let id: Int
+    let id: String
     let name: String
 }
 
 struct PromotionReduction: Codable {
     let hasReduction: Bool
     let amount: Int
-    let reductionType: String
+    let reductionType: String?
 }
 
 struct PromotionSupplement: Codable {

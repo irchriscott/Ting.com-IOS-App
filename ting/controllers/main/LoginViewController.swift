@@ -97,12 +97,13 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                                     let _ = json["msgs"] as? NSArray
                                     let user = try JSONEncoder().encode(serverResponse.user!)
                                     UserAuthentication().saveUserData(data: user)
-                                    sleep(3)
-                                    let storyBoard: UIStoryboard = UIStoryboard(name: "Home", bundle: nil)
-                                    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-                                    let homeDiscoverViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar")
-                                    appDelegate.window?.rootViewController = homeDiscoverViewController
-                                    appDelegate.window?.makeKeyAndVisible()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                                        let storyBoard: UIStoryboard = UIStoryboard(name: "Home", bundle: nil)
+                                        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+                                        let homeDiscoverViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar")
+                                        appDelegate.window?.rootViewController = homeDiscoverViewController
+                                        appDelegate.window?.makeKeyAndVisible()
+                                    })
                                 } catch {}
                             }
                         } else {

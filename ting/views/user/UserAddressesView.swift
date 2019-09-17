@@ -181,8 +181,8 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
                 
                 var request = URLRequest(url: url)
                 request.httpMethod = "GET"
-                request.addValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
-                request.setValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
+                request.addValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+                request.setValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
                 
                 let session = URLSession.shared
                 
@@ -467,7 +467,7 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
             
             self.closeMapsUserLocation()
             
-            let params: Parameters = ["token": self.session!.token, "address": address, "latitude": latitude, "longitude": longitude, "type": type, "other_address_type": type]
+            let params: Parameters = ["token": self.session!.token!, "address": address, "latitude": latitude, "longitude": longitude, "type": type, "other_address_type": type]
             
             let urlString = self.mapTag == 0 ? "\(URLs.updateUserAddress)\(id)/" : URLs.addUserAddress
             guard let url = URL(string: urlString) else { return }
@@ -475,8 +475,8 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.addValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
-            request.setValue(self.session!.token, forHTTPHeaderField: "AUTHORIZATION")
+            request.addValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+            request.setValue(self.session!.token!, forHTTPHeaderField: "AUTHORIZATION")
             
             let boundary = Requests().generateBoundary()
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

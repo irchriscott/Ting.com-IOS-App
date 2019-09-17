@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hYB-MA-usT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hYB-MA-usT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,31 +18,6 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Restaurants-->
-        <scene sceneID="iME-lW-4qF">
-            <objects>
-                <viewController id="Zgq-HB-f90" customClass="HomeRestaurantsViewController" customModule="ting" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CY4-XC-n1d">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Restaurants" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zed-fH-7TZ">
-                                <rect key="frame" x="141" y="250" width="92" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="gre-fZ-dz2"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Restaurants" image="ic_restaurants" selectedImage="ic_restaurants" id="2q1-Uc-KvT"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Poq-ZG-3u6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1164" y="606"/>
-        </scene>
         <!--Moments-->
         <scene sceneID="G41-8D-CFT">
             <objects>
@@ -66,7 +41,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HgS-7J-EPn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-410" y="606"/>
+            <point key="canvasLocation" x="-303" y="606"/>
         </scene>
         <!--Discovery-->
         <scene sceneID="6NR-Bh-Dx8">
@@ -108,7 +83,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="hYB-MA-usT" kind="relationship" relationship="viewControllers" id="4g6-uv-lBS"/>
-                        <segue destination="Zgq-HB-f90" kind="relationship" relationship="viewControllers" id="kOX-IH-BKH"/>
+                        <segue destination="ZHN-Em-l18" kind="relationship" relationship="viewControllers" id="kOX-IH-BKH"/>
                         <segue destination="zqC-ba-sRA" kind="relationship" relationship="viewControllers" id="n71-rd-Fog"/>
                         <segue destination="DaR-rN-viP" kind="relationship" relationship="viewControllers" id="lbI-S6-Dpr"/>
                     </connections>
@@ -328,21 +303,21 @@
             <point key="canvasLocation" x="613.60000000000002" y="-161.46926536731635"/>
         </scene>
         <!--User View Controller-->
-        <scene sceneID="XOP-zk-sj2">
+        <scene sceneID="UQ8-OV-yx4">
             <objects>
-                <collectionViewController restorationIdentifier="UserView" storyboardIdentifier="UserView" id="K11-5r-5ja" customClass="UserViewController" customModule="ting" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Ggc-Gy-9ci">
+                <collectionViewController restorationIdentifier="UserView" storyboardIdentifier="UserView" id="mLq-bL-zGq" customClass="UserViewController" customModule="ting" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="L9B-1z-mkw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WAp-Tc-xag">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nFm-uW-dSg">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="igL-BO-tCP">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Q61-Pw-r0b">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -352,19 +327,18 @@
                             </collectionViewCell>
                         </cells>
                         <connections>
-                            <outlet property="dataSource" destination="K11-5r-5ja" id="ZtM-ei-kxM"/>
-                            <outlet property="delegate" destination="K11-5r-5ja" id="JeL-xp-dpP"/>
+                            <outlet property="dataSource" destination="mLq-bL-zGq" id="s68-No-9Bb"/>
+                            <outlet property="delegate" destination="mLq-bL-zGq" id="7yc-9q-4iC"/>
                         </connections>
                     </collectionView>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2QI-L5-hZj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sVG-SG-GpL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1390" y="-161"/>
+            <point key="canvasLocation" x="1362" y="-161"/>
         </scene>
         <!--Edit User Collection View Controller-->
         <scene sceneID="8U6-54-ROx">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5X0-Ph-TDB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <collectionViewController restorationIdentifier="EditUser" storyboardIdentifier="EditUser" id="w2u-NJ-htJ" customClass="EditUserCollectionViewController" customModule="ting" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="wKY-Fu-YiQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -392,6 +366,7 @@
                         </connections>
                     </collectionView>
                 </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5X0-Ph-TDB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2095" y="-161"/>
         </scene>
@@ -421,13 +396,74 @@
             </objects>
             <point key="canvasLocation" x="-325.60000000000002" y="-161.46926536731635"/>
         </scene>
+        <!--Restaurants-->
+        <scene sceneID="waM-FZ-KAf">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZHN-Em-l18" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Restaurants" image="ic_restaurants" selectedImage="ic_restaurants" id="2q1-Uc-KvT"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" largeTitles="YES" id="scz-GJ-1Ko">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="17"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="30"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dMH-QD-BJp" kind="relationship" relationship="rootViewController" id="XOf-TL-JGb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hac-zn-pCU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1164" y="605.84707646176912"/>
+        </scene>
+        <!--Restaurants-->
+        <scene sceneID="lOv-RI-d2K">
+            <objects>
+                <collectionViewController id="dMH-QD-BJp" customClass="HomeRestaurantsViewController" customModule="ting" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Uuj-Jr-ZPN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="O9D-W4-VbO">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="WN3-4n-dXX">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="dMH-QD-BJp" id="hh6-Ct-o4b"/>
+                            <outlet property="delegate" destination="dMH-QD-BJp" id="Sr4-DD-ZgQ"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Restaurants" largeTitleDisplayMode="always" id="Bda-O2-pU4"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cP0-VN-87w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1164" y="1327"/>
+        </scene>
     </scenes>
     <resources>
         <image name="default_user.jpg" width="200" height="200"/>
         <image name="ic_discovery" width="20" height="20"/>
-        <image name="ic_moments" width="20" height="22"/>
+        <image name="ic_moments" width="20" height="22.5"/>
         <image name="ic_restaurants" width="20" height="20"/>
-        <image name="ic_user_menu" width="20" height="26"/>
+        <image name="ic_user_menu" width="20" height="26.5"/>
         <image name="icon_booking.png" width="128" height="128"/>
         <image name="icon_logout.png" width="128" height="128"/>
         <image name="icon_moments.png" width="112" height="128"/>

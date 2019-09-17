@@ -11,10 +11,6 @@ import SystemConfiguration
 
 class Functions : NSObject {
     
-    override init() {
-        super.init()
-    }
-    
     static func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<length).map{ _ in letters.randomElement()! })
@@ -40,5 +36,42 @@ class Functions : NSObject {
         let needsConnection = flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired) != 0
         
         return isReachable && !needsConnection
+    }
+    
+    static func statusWorkTime(open: String, close: String) -> [String: String]? {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        
+        let calendar = Calendar.current
+        let calendarComponets: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
+        let dateTimeComponents = calendar.dateComponents(calendarComponets, from: date)
+        
+        let todayDate = "\(dateTimeComponents.year!)-\(dateTimeComponents.month!)-\(dateTimeComponents.day!)"
+        
+        let _ = "\(todayDate) \(dateTimeComponents.hour!):\(dateTimeComponents.minute!)"
+        let nowTime = date.toMillis()
+        let openTime = dateFormatter.date(from: "\(todayDate) \(open)")!.toMillis()
+        let closeTime = dateFormatter.date(from: "\(todayDate) \(close)")!.toMillis()
+        
+        if openTime >= nowTime {
+            let time = (openTime - nowTime) / (1000 * 60)
+            let add: Int64 = time >= 90 ? 1 : 0
+            if time < 120 {
+                let r = time >= 60 ? "\((time / 60) + add) hr" : "\(time) min"
+                return ["clr": "orange", "msg": "Opening in \(r)", "st": "closed"]
+            } else { return ["clr": "red", "msg": "Closed", "st": "closed"] }
+        } else if nowTime > openTime {
+            if nowTime > closeTime { return ["clr": "red", "msg": "Closed", "st": "closed"] }
+            else {
+                let time = (closeTime - nowTime) / (1000 * 60)
+                let add: Int64 = time >= 90 ? 1 : 0
+                if time < 120 {
+                    let r = time >= 60 ? "\((time / 60) + add) hr" : "\(time) min"
+                    return ["clr": "orange", "msg": "Closing in \(r)", "st": "opened"]
+                } else { return ["clr": "green", "msg": "Opened", "st": "opened"] }
+            }
+        }
+        return nil
     }
 }

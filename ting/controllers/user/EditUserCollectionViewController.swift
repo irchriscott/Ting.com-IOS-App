@@ -194,13 +194,13 @@ class EditUserProfileImageViewCell : UICollectionViewCell, UIImagePickerControll
             let spinner = Spinner()
             spinner.show()
             
-            let params: Parameters = ["token": session!.token]
+            let params: Parameters = ["token": session!.token!]
             guard let url = URL(string: URLs.updateProfileImage) else { return }
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.addValue(session!.token, forHTTPHeaderField: "AUTHORIZATION")
-            request.setValue(session!.token, forHTTPHeaderField: "AUTHORIZATION")
+            request.addValue(session!.token!, forHTTPHeaderField: "AUTHORIZATION")
+            request.setValue(session!.token!, forHTTPHeaderField: "AUTHORIZATION")
             
             let boundary = Requests().generateBoundary()
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

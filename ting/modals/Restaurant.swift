@@ -25,7 +25,7 @@ struct Restaurant: Codable {
     let menus: BranchMenus
     let branches: RestaurantBranches?
     let images: RestaurantImages
-    let tables: BranchTables
+    let tables: BranchTables?
     let likes: BranchLikes?
     let foodCategories: RestaurantFoodCategories?
     let config: RestaurantConfig

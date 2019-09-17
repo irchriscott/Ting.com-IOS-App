@@ -3,6 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
     pod 'GoogleMaps'
     pod 'GooglePlaces'
     pod 'GoogleSignIn'
+    pod 'Floaty'
     # pod 'Kingfisher', '~> 5.0'
     # use_frameworks!
     # pod 'ReachabilitySwift'

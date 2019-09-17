@@ -9,11 +9,11 @@
 import Foundation
 
 struct RestaurantMenu: Codable {
-    let id: Int
-    let type: MenuType
-    let urls: MenuUrls
-    let url: String
-    let menu: Menu
+    let id: Int?
+    let type: MenuType?
+    let urls: MenuUrls?
+    let url: String?
+    let menu: Menu?
 }
 
 struct MenuType: Codable {
@@ -32,7 +32,7 @@ struct Menu: Codable {
     let id: Int
     let restaurant: Restaurant?
     let branch: Branch?
-    let name: String
+    let name: String?
     let category: FoodCategory?
     let dishTimeId: Int?
     let dishTime: String?
@@ -40,25 +40,25 @@ struct Menu: Codable {
     let foodTypeId: Int?
     let drinkTypeId: Int?
     let drinkType: String?
-    let description: String
-    let ingredients: String
-    let showIngredients: Bool
-    let price: Double
-    let lastPrice: Double
-    let currency: String
-    let isCountable: Bool
-    let isAvailable: Bool
-    let quantity: Int
+    let description: String?
+    let ingredients: String?
+    let showIngredients: Bool?
+    let price: String?
+    let lastPrice: String?
+    let currency: String?
+    let isCountable: Bool?
+    let isAvailable: Bool?
+    let quantity: Int?
     let hasDrink: Bool?
-    let drink: String?
-    let url: String
+    let drink: [String: String]?
+    let url: String?
     let promotions: MenuPromotions?
     let reviews: MenuReviews?
     let likes: MenuLikes?
     let foods: MenuFoods?
-    let images: MenuImages
-    let createdAt: String
-    let updatedAt: String
+    let images: MenuImages?
+    let createdAt: String?
+    let updatedAt: String?
 }
 
 struct MenuPromotions: Codable {
@@ -78,7 +78,7 @@ struct MenuLikes: Codable {
 
 struct MenuFoods: Codable {
     let count: Int
-    let foods: [Menu]
+    let foods: [Menu]?
 }
 
 struct MenuImage: Codable {
@@ -93,12 +93,12 @@ struct MenuImages: Codable {
 }
 
 struct FoodCategory: Codable {
-    let id: Int
-    let name: String
-    let description: String
-    let image: String
-    let createdAt: String
-    let updatedAt: String
+    let id: Int?
+    let name: String?
+    let description: String?
+    let image: String?
+    let createdAt: String?
+    let updatedAt: String?
 }
 
 struct MenuLike: Codable {

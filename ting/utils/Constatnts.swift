@@ -27,6 +27,10 @@ struct Colors {
     static let colorToastError          = UIColor(red: 1.00, green: 0.69, blue: 0.71, alpha: 1.0)
     static let colorDarkTransparent     = UIColor(red: 0.56, green: 0.55, blue: 0.93, alpha: 0.3)
     static let colorWhite               = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 1.0)
+    static let colorYellowRate          = UIColor(red: 1.00, green: 0.90, blue: 0.14, alpha: 1.0)
+    static let colorStatusTimeOrange    = UIColor(red: 0.95, green: 0.44, blue: 0.11, alpha: 1.0)
+    static let colorStatusTimeGreen     = UIColor(red: 0.13, green: 0.73, blue: 0.27, alpha: 1.0)
+    static let colorStatusTimeRed       = UIColor(red: 0.86, green: 0.16, blue: 0.16, alpha: 1.0)
 }
 
 struct Sizes {
@@ -54,6 +58,10 @@ struct URLs {
     static let addUserAddress           = "\(endPoint)usr/profile/address/add/"
     static let deleteUserAddress        = "\(endPoint)usr/profile/address/delete/"
     static let updateUserAddress        = "\(endPoint)usr/profile/address/update/"
+    
+    //RESTAURANT
+    
+    static let restaurantsGlobal        = "\(endPoint)usr/g/restaurants/all/"
 }
 
 struct StaticData {
