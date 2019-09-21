@@ -18,6 +18,13 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
     var restaurants: [Branch] = []
     
     var locationManager = CLLocationManager()
+    var refresherLoadingView = UIRefreshControl()
+    var selectedLocation: CLLocation?
+    
+    let session = UserAuthentication().get()!
+    var isMapOpened: Bool = false
+    var mapCenter: CLLocation?
+    var selectedBranch: Branch?
     
     let mapFloatingButton: FloatingButton = {
         let view = FloatingButton()
@@ -25,9 +32,29 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
         view.icon = UIImage(named: "icon_addess_white")
         return view
     }()
+    
+    lazy var mapView: RestaurantMapView = {
+        let view = RestaurantMapView()
+        view.controller = self
+        view.restaurant = self.selectedBranch
+        return view
+    }()
+    
+    var circleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.colorDarkTransparent
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.backgroundColor = Colors.colorWhite
+        self.navigationController?.navigationBar.barTintColor = Colors.colorWhite
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        let barButtonAppearance = UIBarButtonItem.appearance()
+        barButtonAppearance.setTitleTextAttributes([.foregroundColor : UIColor.clear], for: .normal)
         
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -41,9 +68,28 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
         self.view.addSubview(mapFloatingButton)
         self.view.addConstraintsWithFormat(format: "H:[v0(50)]-12-|", views: mapFloatingButton)
         self.view.addConstraintsWithFormat(format: "V:[v0(50)]-\(tabBarHeight + 12)-|", views: mapFloatingButton)
+        
+        refresherLoadingView.addTarget(self, action: #selector(HomeRestaurantsViewController.refreshRestaurants), for: UIControl.Event.valueChanged)
+        collectionView.addSubview(refresherLoadingView)
+        mapFloatingButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(HomeRestaurantsViewController.openRestaurantMap)))
+        
+        mapFloatingButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(HomeRestaurantsViewController.showAddresses)))
+        
+        self.mapView.closeButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(HomeRestaurantsViewController.closeRestaurantMap)))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.setupNavigationBar()
+        if isMapOpened == true, self.restaurants.count > 0 { self.openRestaurantMap() }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.setupNavigationBar()
     }
     
     private func getRestaurants(location: CLLocation?){
+        self.spinnerViewHeight = 100
+        self.restaurants = []
         APIDataProvider.instance.loadRestaurants(url: URLs.restaurantsGlobal) { (branches) in
             DispatchQueue.main.async {
                 if !branches.isEmpty {
@@ -60,25 +106,46 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
                 self.restaurants = self.restaurants.sorted(by: { $0.dist! < $1.dist! })
                 self.spinnerViewHeight = 0
                 self.collectionView.reloadData()
+                self.refresherLoadingView.endRefreshing()
             }
         }
     }
     
+    @objc func refreshRestaurants(){ self.getRestaurants(location: self.selectedLocation) }
+    
+    @objc func showAddresses(){
+        let addresses = UIAlertController(title: "Restaurants Near Location", message: nil, preferredStyle: .actionSheet)
+        addresses.addAction(UIAlertAction(title: "Current Location", style: .default) { (action) in
+            DispatchQueue.main.async { self.checkLocationAuthorization(status: CLLocationManager.authorizationStatus()) }
+        })
+        session.addresses?.addresses.forEach({ (address) in
+            addresses.addAction(UIAlertAction(title: address.address, style: .default, handler: { (action) in
+                DispatchQueue.main.async {
+                    let location = CLLocation(latitude: CLLocationDegrees(Double(address.latitude)!), longitude: CLLocationDegrees(Double(address.longitude)!))
+                    self.selectedLocation = location
+                    self.getRestaurants(location: location)
+                }
+            }))
+        })
+        addresses.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (action) in }))
+        if let window = UIApplication.shared.keyWindow {
+            window.rootViewController?.present(addresses, animated: true, completion: nil)
+        }
+    }
+    
     func setupNavigationBar(){
-        self.navigationController?.navigationBar.barTintColor = Colors.colorPrimaryDark
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = Colors.colorPrimaryDark
+        self.navigationController?.navigationBar.backgroundColor = Colors.colorWhite
+        self.navigationController?.navigationBar.barTintColor = Colors.colorWhite
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barStyle = .black
+        self.navigationController?.navigationBar.barStyle = .default
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationItem.title = "Restaurants"
         
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "icon_unwind_25_white")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "icon_unwind_25_white")
-        
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationItem.title = ""
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.black]
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : Colors.colorDarkGray]
         
         let barButtonAppearance = UIBarButtonItem.appearance()
-        barButtonAppearance.setTitleTextAttributes([.foregroundColor : UIColor.white], for: .normal)
+        barButtonAppearance.setTitleTextAttributes([.foregroundColor : UIColor.clear], for: .normal)
     }
     
     private func checkLocationAuthorization(status: CLAuthorizationStatus){
@@ -93,7 +160,9 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
             self.locationManager.startUpdatingLocation()
             break
         case .denied:
-            self.getRestaurants(location: nil)
+            let location = CLLocation(latitude: CLLocationDegrees(Double((session.addresses?.addresses[0].latitude)!)!), longitude: CLLocationDegrees(Double((session.addresses?.addresses[0].longitude)!)!))
+            self.selectedLocation = location
+            self.getRestaurants(location: location)
             let alert = UIAlertController(title: "Please, Go to settings and allow this app to use your location", message: nil, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -103,7 +172,9 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
             self.locationManager.startUpdatingLocation()
             break
         case .restricted:
-            self.getRestaurants(location: nil)
+            let location = CLLocation(latitude: CLLocationDegrees(Double((session.addresses?.addresses[0].latitude)!)!), longitude: CLLocationDegrees(Double((session.addresses?.addresses[0].longitude)!)!))
+            self.selectedLocation = location
+            self.getRestaurants(location: location)
             let alert = UIAlertController(title: "Please, Go to settings and allow this app to use your location", message: nil, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -112,9 +183,20 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let _ = locations.last else { return }
-        let location = CLLocation(latitude: CLLocationDegrees(0.3249535), longitude: CLLocationDegrees(32.56643859999997))
+        guard let location = locations.last else { return }
+        self.selectedLocation = location
         self.getRestaurants(location: location)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        self.checkLocationAuthorization(status: CLLocationManager.authorizationStatus())
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        let location = CLLocation(latitude: CLLocationDegrees(Double((session.addresses?.addresses[0].latitude)!)!), longitude: CLLocationDegrees(Double((session.addresses?.addresses[0].longitude)!)!))
+        self.selectedLocation = location
+        self.getRestaurants(location: location)
+        Toast.makeToast(message: error.localizedDescription, duration: Toast.LONG_LENGTH_DURATION, style: .error)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -124,6 +206,7 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! RestaurantViewCell
         cell.branch = self.restaurants[indexPath.item]
+        cell.controller = self
         return cell
     }
     
@@ -139,13 +222,32 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
         if !self.restaurants.isEmpty {
             
             let branch = self.restaurants[indexPath.item]
-            let frameWidth = view.frame.width - CGFloat(118 + 18)
+            let device = UIDevice.type
             
-            let branchNameRect = NSString(string: "\(branch.name), \(branch.restaurant!.name)").boundingRect(with: CGSize(width: frameWidth, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font : UIFont(name: "Poppins-SemiBold", size: 16)!], context: nil)
+            var restaurantNameTextSize: CGFloat = 16
+            var restaurantAddressTextSize: CGFloat = 13
+            var restaurantImageConstant: CGFloat = 80
             
-            let branchAddressRect = NSString(string: "\(branch.name), \(branch.restaurant!.name)").boundingRect(with: CGSize(width: frameWidth, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font : UIFont(name: "Poppins-Regular", size: 13)!], context: nil)
+            if UIDevice.smallDevices.contains(device) {
+                restaurantImageConstant = 55
+                restaurantNameTextSize = 14
+                restaurantAddressTextSize = 12
+            } else if UIDevice.mediumDevices.contains(device) {
+                restaurantImageConstant = 70
+                restaurantNameTextSize = 15
+            }
             
-            let cellHeight: CGFloat = 2 + 20 + 4 + 8 + 45 + 8 + 26 + 8 + 26 + branchNameRect.height + branchAddressRect.height + 16
+            let frameWidth = view.frame.width - (60 + restaurantImageConstant)
+            
+            let branchNameRect = NSString(string: "\(branch.name), \(branch.restaurant!.name)").boundingRect(with: CGSize(width: frameWidth, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font : UIFont(name: "Poppins-SemiBold", size: restaurantNameTextSize)!], context: nil)
+            
+            let branchAddressRect = NSString(string: branch.address).boundingRect(with: CGSize(width: frameWidth - 18, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font : UIFont(name: "Poppins-Regular", size: restaurantAddressTextSize)!], context: nil)
+            
+            var valueToAdd: CGFloat = 0
+            if branchNameRect.height > 25 { valueToAdd += 8 }
+            if branchAddressRect.height > 25 { valueToAdd += 8 }
+            
+            let cellHeight: CGFloat = 2 + 20 + 4 + 8 + 45 + 8 + 26 + 8 + 26 + branchNameRect.height + branchAddressRect.height + 16 + valueToAdd
             
             return CGSize(width: view.frame.width, height: cellHeight)
         }
@@ -154,6 +256,40 @@ class HomeRestaurantsViewController: UICollectionViewController, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+    }
+    
+    @objc func openRestaurantMap(){
+        if let window = UIApplication.shared.keyWindow {
+            let startingPoint = mapFloatingButton.convert(mapFloatingButton.center, to: self.view)
+            circleView.frame = Functions.frameForCircle(withViewCenter: window.center, size: window.frame.size, startPoint: startingPoint)
+            circleView.layer.cornerRadius = circleView.frame.size.height / 2
+            circleView.center = startingPoint
+            
+            isMapOpened = true
+            window.windowLevel = UIWindow.Level.statusBar
+            mapView.mapCenter = self.selectedLocation
+            mapView.frame = window.frame
+            mapView.center = window.center
+            mapView.restaurants = self.restaurants
+            mapView.restaurant = self.selectedBranch
+            window.addSubview(mapView)
+        }
+    }
+    
+    @objc func closeRestaurantMap(){
+        UIApplication.shared.keyWindow?.windowLevel = UIWindow.Level.normal
+        self.mapView.closeImageView.removeFromSuperview()
+        self.mapView.closeButtonView.removeFromSuperview()
+        self.mapView.removeFromSuperview()
+        isMapOpened = false
+        mapCenter = nil
+        selectedBranch = nil
+    }
+    
+    public func navigateToRestaurant(restaurant: Branch){
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        let userViewController = storyboard.instantiateViewController(withIdentifier: "RestaurantView") as! RestaurantViewController
+        self.navigationController?.pushViewController(userViewController, animated: true)
     }
 }
 

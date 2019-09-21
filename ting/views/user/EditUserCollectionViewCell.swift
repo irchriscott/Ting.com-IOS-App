@@ -11,6 +11,7 @@ import UIKit
 class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var editUserController: EditUserCollectionViewController?
+    var navbarHeight: CGFloat?
     let session = UserAuthentication().get()
     
     let separator_1: UIView = {
@@ -100,9 +101,8 @@ class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UI
         return view
     }()
     
-    lazy var userAddresses: UserAddressesView = {
+    let userAddresses: UserAddressesView = {
         let view = UserAddressesView()
-        view.editUserController = self.editUserController
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -191,6 +191,9 @@ class EditUserCollectionViewCell: UICollectionViewCell, UIPickerViewDelegate, UI
         addSubview(separator_3)
         addSubview(labelAddressesEditView)
         addSubview(userAddresses)
+        
+        self.userAddresses.editUserController = self.editUserController
+        self.userAddresses.navbarHeight = self.navbarHeight
         
         addConstraintsWithFormat(format: "H:|-15-[v0]", views: labelLoginEditView)
         addConstraintsWithFormat(format: "H:|-15-[v0]-15-|", views: emailEditView)

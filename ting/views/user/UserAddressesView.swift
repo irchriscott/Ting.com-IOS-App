@@ -17,6 +17,7 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
     var session = UserAuthentication().get()
     var editUserController: EditUserCollectionViewController?
     let appWindow = UIApplication.shared.keyWindow
+    var navbarHeight: CGFloat?
     
     let tableView: UITableView = {
         let view = UITableView()
@@ -75,9 +76,9 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
     
     let searchButton: UIButton = {
         let view = UIButton()
-        view.setImage(UIImage(named: "icon_search_25_gray"), for: .normal)
+        view.setImage(UIImage(named: "icon_search_25_white"), for: .normal)
         view.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
-        view.backgroundColor = Colors.colorVeryLightGray
+        view.backgroundColor = UIColor(red: 0.56, green: 0.55, blue: 0.93, alpha: 0.5)
         view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         view.layer.cornerRadius = view.frame.height / 2
         view.layer.masksToBounds = true
@@ -249,7 +250,12 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
             self.mapOverlay.backgroundColor =  Colors.colorTransparent
             self.mapOverlay.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeMapsUserLocation)))
             
-            let height = window.frame.height - 88
+            let _ = UIApplication.shared.statusBarFrame.height
+            
+            let device = UIDevice.type
+            let topConstraint: CGFloat = UIDevice.largeNavbarDevices.contains(device) ? 88 : 64
+            
+            let height = window.frame.height - topConstraint
             let y = window.frame.height - height
             self.mapViewContainer.frame = CGRect(origin: CGPoint(x: 0, y: window.frame.height), size: CGSize(width: window.frame.width, height: height))
             self.mapViewContainer.layer.cornerRadius = 15
@@ -299,7 +305,7 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
             window.addSubview(self.mapViewContainer)
             
             window.addConstraintsWithFormat(format: "H:|[v0]|", views: self.mapViewContainer)
-            window.addConstraintsWithFormat(format: "V:|-88-[v0]|", views: self.mapViewContainer)
+            window.addConstraintsWithFormat(format: "V:|-\(topConstraint)-[v0]|", views: self.mapViewContainer)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                 self.mapOverlay.alpha = 1
@@ -370,7 +376,7 @@ class UserAddressesView: UIView, UITableViewDelegate, UITableViewDataSource, CLL
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
+        guard let location = locations.last else { spinner.hide(); return }
         let geocoder = GMSGeocoder()
         geocoder.reverseGeocodeCoordinate(location.coordinate) { (response, error) in
             if let address = response?.firstResult(){

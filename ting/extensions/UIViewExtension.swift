@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIView{
+extension UIView {
     
     func setLinearGradientBackgroundColor(colorOne: UIColor, colorTwo: UIColor){
         

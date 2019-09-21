@@ -97,7 +97,7 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
                                     let _ = json["msgs"] as? NSArray
                                     let user = try JSONEncoder().encode(serverResponse.user!)
                                     UserAuthentication().saveUserData(data: user)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
                                         let storyBoard: UIStoryboard = UIStoryboard(name: "Home", bundle: nil)
                                         let appDelegate = UIApplication.shared.delegate! as! AppDelegate
                                         let homeDiscoverViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar")

@@ -83,6 +83,7 @@ class EditUserCollectionViewController: UICollectionViewController, UICollection
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EditUserCollectionViewCell
         cell.editUserController = self
+        cell.navbarHeight = self.navigationController?.navigationBar.frame.height
         return cell
     }
 }

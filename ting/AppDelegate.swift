@@ -171,7 +171,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, CLLoca
             }
         }
     }
-
-
 }
 
