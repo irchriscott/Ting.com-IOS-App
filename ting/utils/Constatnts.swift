@@ -68,6 +68,7 @@ struct StaticData {
     static let genders                  = ["Male", "Female"]
     static let addressTypes             = ["Home", "Work", "School", "Other"]
     static let googleClientID           = "1033794072902-espnuj5ort5627uv0mun7ih2lndv17lc.apps.googleusercontent.com"
+    static let googleMapsKey            = "AIzaSyD2mLGusTJZqu7zesBgobnoVIzN6hIayvk"
 }
 
 struct Base64ImageData {

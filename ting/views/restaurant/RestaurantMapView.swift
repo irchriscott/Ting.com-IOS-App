@@ -23,6 +23,8 @@ class RestaurantMapView: UIView, GMSMapViewDelegate {
     
     var googleMapsView: GMSMapView!
     
+    let session = UserAuthentication().get()!
+    
     let closeButtonView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -471,11 +473,95 @@ class RestaurantMapView: UIView, GMSMapViewDelegate {
     @objc private func onDrivingModeDirection(){
         self.drivingDirectionView.background = Colors.colorDarkTransparent
         self.walkingDirectionView.background = UIColor(red: 0.87, green: 0.87, blue: 0.87, alpha: 0.7)
+        self.requestMapRoute(mode: "driving")
     }
     
     @objc private func onWalkingModeDirection(){
         self.drivingDirectionView.background = UIColor(red: 0.87, green: 0.87, blue: 0.87, alpha: 0.7)
         self.walkingDirectionView.background = Colors.colorDarkTransparent
+        self.requestMapRoute(mode: "walking")
+    }
+    
+    private func requestMapRoute(mode: String){
+        if let branch = self.restaurant {
+            let origin = controller?.selectedLocation
+            let destination = CLLocation(latitude: CLLocationDegrees(Double(branch.latitude)!), longitude: CLLocationDegrees(Double(branch.longitude)!))
+            guard let url = Functions.googleMapsDirectornURL(origin: origin!, destination: destination, mode: mode) else { return }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            let session = URLSession.shared
+            
+            session.dataTask(with: request){ (data, response, error) in
+                if response != nil {}
+                if let data = data {
+                    do {
+                        let routes = try JSONDecoder().decode(PolylineMapRoute.self, from: data)
+                        let mainPath = routes.routes[0]
+                        DispatchQueue.main.async {
+                            self.drawRoute(withLine: mainPath.overview_polyline.points)
+                            for (i, _) in routes.routes.enumerated() {
+                                let leg = mainPath.legs[i]
+                                self.directionDistanceText.text = "\(leg.duration.text) (\(leg.distance.text))"
+                            }
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            Toast.makeToast(message: error.localizedDescription, duration: Toast.LONG_LENGTH_DURATION, style: .error)
+                        }
+                    }
+                }
+            }.resume()
+        }
+    }
+    
+    private func drawRoute(withLine line: String) {
+        if let branch = self.restaurant {
+            self.googleMapsView.clear()
+            let path = GMSPath(fromEncodedPath: line)
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeWidth = 5.0
+            polyline.strokeColor = UIColor(red: 0.56, green: 0.55, blue: 0.93, alpha: 0.8)
+            polyline.map = self.googleMapsView
+            
+            let coords = CLLocation(latitude: CLLocationDegrees(Double(branch.latitude)!), longitude: CLLocationDegrees(Double(branch.longitude)!))
+            let restaurantMarkerView: CustomMapMarker = {
+                let view = CustomMapMarker()
+                view.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+                return view
+            }()
+            
+            restaurantMarkerView.setup(path: "\(URLs.hostEndPoint)\(branch.restaurant!.logo)")
+            let restaurantMarker = GMSMarker(position: coords.coordinate)
+            restaurantMarker.iconView = restaurantMarkerView
+            
+            do {
+                let data = try JSONEncoder().encode(branch)
+                restaurantMarker.snippet = String(data: data, encoding: .utf8)
+                restaurantMarker.userData = branch
+            } catch {
+                restaurantMarker.snippet = branch.address
+                restaurantMarker.userData = branch
+            }
+            restaurantMarker.tracksInfoWindowChanges = true
+            restaurantMarker.map = self.googleMapsView
+            
+            let userCoords = controller?.selectedLocation
+            let userMarkerView: CustomMapMarker = {
+                let view = CustomMapMarker()
+                view.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+                return view
+            }()
+            
+            userMarkerView.setup(path: "\(URLs.uploadEndPoint)\(self.session.image)")
+            let userMarker = GMSMarker(position: userCoords!.coordinate)
+            userMarker.iconView = userMarkerView
+            userMarker.map = self.googleMapsView
+            
+            let bounds = GMSCoordinateBounds(coordinate: coords.coordinate, coordinate: userCoords!.coordinate)
+            let newCenter = GMSCameraUpdate.fit(bounds, withPadding: 35)
+            self.googleMapsView.animate(with: newCenter)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

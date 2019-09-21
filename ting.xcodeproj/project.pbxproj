@@ -44,6 +44,7 @@
 		8F3309DB22F9E8E900437767 /* HomeMomentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3309DA22F9E8E900437767 /* HomeMomentsViewController.swift */; };
 		8F3309DE22F9EBB700437767 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3309DD22F9EBB700437767 /* LaunchScreenViewController.swift */; };
 		8F36E729233648D70028ECE6 /* BottomSheetMenuControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36E728233648D70028ECE6 /* BottomSheetMenuControllerView.swift */; };
+		8F36E72D2336881B0028ECE6 /* PolylineMapRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36E72C2336881A0028ECE6 /* PolylineMapRoute.swift */; };
 		8F38601822F1D21E00479072 /* Poppins_Extra_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F38600F22F1D21E00479072 /* Poppins_Extra_Bold.ttf */; };
 		8F38601922F1D21E00479072 /* Poppins_Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F38601022F1D21E00479072 /* Poppins_Light.ttf */; };
 		8F38601A22F1D21E00479072 /* Poppins_Semi_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F38601122F1D21E00479072 /* Poppins_Semi_bold.ttf */; };
@@ -138,6 +139,7 @@
 		8F3309DA22F9E8E900437767 /* HomeMomentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMomentsViewController.swift; sourceTree = "<group>"; };
 		8F3309DD22F9EBB700437767 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		8F36E728233648D70028ECE6 /* BottomSheetMenuControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetMenuControllerView.swift; sourceTree = "<group>"; };
+		8F36E72C2336881A0028ECE6 /* PolylineMapRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineMapRoute.swift; sourceTree = "<group>"; };
 		8F38600F22F1D21E00479072 /* Poppins_Extra_Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Poppins_Extra_Bold.ttf; sourceTree = "<group>"; };
 		8F38601022F1D21E00479072 /* Poppins_Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Poppins_Light.ttf; sourceTree = "<group>"; };
 		8F38601122F1D21E00479072 /* Poppins_Semi_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Poppins_Semi_bold.ttf; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				8F49C10B22F497D80084F3E7 /* RestaurantMenu.swift */,
 				8F49C10D22F49ABA0084F3E7 /* User.swift */,
 				8F43F3CF22F79DC900545AC2 /* Media.swift */,
+				8F36E72C2336881A0028ECE6 /* PolylineMapRoute.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				8F38602222F1D21E00479072 /* PaddedTextField.swift in Sources */,
 				8F3309DB22F9E8E900437767 /* HomeMomentsViewController.swift in Sources */,
 				8F68B03222F583E500A3AB3B /* PrimaryButton.swift in Sources */,
+				8F36E72D2336881B0028ECE6 /* PolylineMapRoute.swift in Sources */,
 				8FC6089222FCA7D3005D142B /* UITabBarViewControllerExtension.swift in Sources */,
 				8F30B20E22F9B8E2000B66B7 /* HomeViewController.swift in Sources */,
 				8F13CAF62334FDB300E3D03D /* InlineIconTextView.swift in Sources */,

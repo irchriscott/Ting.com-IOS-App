@@ -9,6 +9,7 @@
 import Foundation
 import SystemConfiguration
 import UIKit
+import MapKit
 
 class Functions : NSObject {
     
@@ -90,5 +91,10 @@ class Functions : NSObject {
         var sysinfo = utsname()
         uname(&sysinfo)
         return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
+    }
+    
+    static func googleMapsDirectornURL(origin: CLLocation, destination: CLLocation, mode: String) -> URL? {
+        let urlString = "https://maps.googleapis.com/maps/api/directions/json?key=\(StaticData.googleMapsKey)&origin=\(origin.coordinate.latitude),\(origin.coordinate.longitude)&destination=\(destination.coordinate.latitude),\(destination.coordinate.longitude)&sensor=false&mode=\(mode)"
+        return URL(string: urlString)
     }
 }
